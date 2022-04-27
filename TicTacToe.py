@@ -1,8 +1,6 @@
 from Ui import Gui, Terminal
 from sys import argv
 
-# git extension
-
 
 def usage():
     print(
@@ -15,4 +13,15 @@ t : play with the Terminal"""
 
 
 if __name__ == "__main__":
-    pass
+    if len(argv) != 2:
+        usage()
+    elif argv[1] == "t":
+        ui = Terminal()
+    elif argv[1] == "g":
+        ui = Gui()
+    else:
+        usage()
+
+    # polymorphism being used
+    ui.run()
+
