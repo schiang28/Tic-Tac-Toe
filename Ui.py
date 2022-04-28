@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from multiprocessing.sharedctypes import Value
 from Game import Game, GameError
+from tkinter import *
 
 
 class Ui(ABC):
@@ -11,10 +12,14 @@ class Ui(ABC):
 
 class Gui(Ui):
     def __init__(self):
-        pass
+        root = Tk()
+        root.title("Tic Tact Toe")
+        frame = Frame(root)
+        frame.pack()
+        self.__root = root
 
     def run(self):
-        pass
+        self.__root.mainloop()
 
 
 class Terminal(Ui):
