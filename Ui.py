@@ -36,13 +36,17 @@ class Gui(Ui):
         self.__buttons = [[None for _ in range(3)] for _ in range(3)]
         for row, col in product(range(3), range(3)):
             b = StringVar()
-            b.set(self.__game.at(row + 1, col + 1))
+            b.set(self.__game.at(row + 1, col + 1))  # 1 basing
             self.__buttons[row][col] = b
 
             cmd = lambda r=row, c=col: self.__play(r, c)
-            Button(frame, textvariable=b, command=cmd).grid(row=row, column=col)
+            Button(frame, textvariable=b, command=cmd).grid(
+                row=row, column=col
+            )  # calls cmd with no arguments
 
-        Button(game_win, text="Dismiss", command=game_win.destroy).grid(row=1, column=0)
+        Button(game_win, text="Dismiss", command=game_win.destroy).grid(
+            row=1, column=0
+        )  # closes the 3x3 grid
 
     def __play(self, r, c):
         self.__game.play(r + 1, c + 1)
