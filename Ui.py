@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from multiprocessing.sharedctypes import Value
 from Game import Game, GameError
 from tkinter import *
+from itertools import product
 
 
 class Ui(ABC):
@@ -26,6 +27,24 @@ class Gui(Ui):
         pass
 
     def __play_game(self):
+        self.__game = Game()
+        game_win = Toplevel(self.__root)
+        game_win.title("Game")
+        frame = Frame(game_win)
+        frame.grid(row=0, column=0)
+
+        self.__buttons = [[None for _ in range(3)] for _ in range(3)]
+        for row, col in product(range(3), range(3)):
+            b = StringVar()
+            b.set(self.__game.at(row + 1, col + 1))
+            self.__buttons[row][col] = b
+            Button(frame, textvariable=b, command=self.__blank).grid(
+                row=row, column=col
+            )
+
+        Button(game_win, text="Dismiss", command=game_win.destroy).grid(row=1, column=0)
+
+    def __blank(self):
         pass
 
     def __quit(self):
