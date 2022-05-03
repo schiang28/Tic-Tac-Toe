@@ -16,7 +16,20 @@ class Gui(Ui):
         root.title("Tic Tact Toe")
         frame = Frame(root)
         frame.pack()
+
+        Button(frame, text="Help", command=self.__show_help).pack(fill=X)
+        Button(frame, text="Play", command=self.__play_game).pack(fill=X)
+        Button(frame, text="Quit", command=self.__quit).pack(fill=X)
         self.__root = root
+
+    def __show_help(self):
+        pass
+
+    def __play_game(self):
+        pass
+
+    def __quit(self):
+        self.__root.quit()
 
     def run(self):
         self.__root.mainloop()
