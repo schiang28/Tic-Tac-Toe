@@ -14,6 +14,7 @@ class Ui(ABC):
 
 class Gui(Ui):
     def __init__(self):
+        self.__game_win = None
         root = Tk()
         root.title("Tic Tact Toe")
         frame = Frame(root)
@@ -38,6 +39,10 @@ class Gui(Ui):
         pass
 
     def __play_game(self):
+        # if the game window already exists, then pressing the play button should have no effect
+        if self.__game_win:
+            return
+
         self.__finished = False
         self.__game = Game()
         game_win = Toplevel(self.__root)
@@ -65,11 +70,17 @@ class Gui(Ui):
             Grid.columnconfigure(frame, i, weight=1)
             Grid.rowconfigure(frame, i, weight=1)
 
-        Button(game_win, text="Dismiss", command=game_win.destroy).grid(
+        self.__game_win = game_win
+        Button(game_win, text="Dismiss", command=self.__dismiss_game_win).grid(
             row=1, column=0
         )  # closes the 3x3 grid
 
+    def __dismiss_game_win(self):
+        self.__game_win.destroy()
+        self.__game_win = None
+
     def __play(self, r, c):
+        # if game has finished, then pressing a button in the frame should have no effect
         if self.__finished:
             return
 
