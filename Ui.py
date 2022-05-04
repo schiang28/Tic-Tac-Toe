@@ -32,11 +32,13 @@ class Gui(Ui):
         console.config(yscrollcommand=scroll.set)
 
         self.__root = root
+        self.__console = console  # save the consolde for adding text later
 
     def __show_help(self):
         pass
 
     def __play_game(self):
+        self.__finished = False
         self.__game = Game()
         game_win = Toplevel(self.__root)
         game_win.title("Game")
@@ -68,8 +70,23 @@ class Gui(Ui):
         )  # closes the 3x3 grid
 
     def __play(self, r, c):
-        self.__game.play(r + 1, c + 1)
-        self.__buttons[r][c].set(self.__game.at(r + 1, c + 1))
+        if self.__finished:
+            return
+
+        try:
+            self.__game.play(r + 1, c + 1)
+        except GameError as e:
+            self.__console.insert(END, f"{e} \n")
+
+        for row, col in product(range(3), range(3)):
+            self.__buttons[row][col].set(self.__game.at(row + 1, col + 1))
+
+        if self.__game.winner == Game.DRAW:
+            self.__console.insert(END, "Game is drawn\n")
+            self.__finished = True
+        elif self.__game.winner:
+            self.__console.insert(END, f"Game is won by {self.__game.winner} \n")
+            self.__finished = True
 
     def __quit(self):
         self.__root.quit()
